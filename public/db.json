@@ -1,0 +1,47 @@
+{
+  "student": {
+    "id": "1",
+    "name": "Joy Pretty Tewu",
+    "faculty": "Fakultas Ilmu Komputer",
+    "major": "Ilmu Komputer",
+    "semester": 5,
+    "level": 3,
+    "dateOfBirth": "2005-11-26",
+    "email": "joy.tewu@student.unklab.ac.id",
+    "phone": "+62 xxx xxxx xxxx",
+    "academicInfo": {
+      "studentId": "2021XXXXXX",
+      "enrollmentYear": 2021,
+      "expectedGraduation": 2025,
+      "gpa": "3.85"
+    },
+    "organizations": [
+      {
+        "id": 1,
+        "name": "Himpunan Mahasiswa Universitas Klabat",
+        "position": "Seksi Humas",
+        "period": "2025",
+        "description": "Bertanggung jawab dalam komunikasi dan hubungan masyarakat"
+      },
+      {
+        "id": 2,
+        "name": "Choir Voice of Computer Science",
+        "position": "Seksi Usaha Dana",
+        "period": "2025",
+        "description": "Mengelola keuangan dan mencari sponsor untuk kegiatan paduan suara"
+      }
+    ],
+    "hobbies": [
+      {
+        "id": 1,
+        "name": "Menulis",
+        "icon": "PenTool"
+      },
+      {
+        "id": 2,
+        "name": "Menggambar",
+        "icon": "Palette"
+      }
+    ]
+  }
+}
