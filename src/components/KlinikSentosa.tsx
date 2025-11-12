@@ -16,9 +16,20 @@ import {
   Heart,
   Pill,
   UserCheck,
-  AlertCircle
+  AlertCircle,
+  Eye,
+  FileText,
+  Award
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 interface KlinikData {
   klinik: {
@@ -86,6 +97,10 @@ const KlinikSentosa = () => {
     queryKey: ["klinikData"],
     queryFn: fetchKlinikData,
   });
+
+  const [selectedPasien, setSelectedPasien] = useState<typeof data.pasienHariIni[0] | null>(null);
+  const [selectedDokter, setSelectedDokter] = useState<typeof data.dokter[0] | null>(null);
+  const [selectedLayanan, setSelectedLayanan] = useState<typeof data.klinik.layanan[0] | null>(null);
 
   if (isLoading) {
     return (
@@ -258,7 +273,11 @@ const KlinikSentosa = () => {
             </h2>
             <div className="space-y-3">
               {data.pasienHariIni.map((pasien) => (
-                <Card key={pasien.nomorAntrian} className="bg-gradient-card shadow-soft hover:shadow-medium transition-all">
+                <Card 
+                  key={pasien.nomorAntrian} 
+                  className="bg-gradient-card shadow-soft hover:shadow-medium transition-all cursor-pointer"
+                  onClick={() => setSelectedPasien(pasien)}
+                >
                   <CardContent className="p-5">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 space-y-2">
@@ -282,9 +301,15 @@ const KlinikSentosa = () => {
                           Terdaftar: {pasien.waktuDaftar}
                         </p>
                       </div>
-                      <Badge className={getStatusColor(pasien.status)}>
-                        {pasien.status}
-                      </Badge>
+                      <div className="flex flex-col items-end gap-2">
+                        <Badge className={getStatusColor(pasien.status)}>
+                          {pasien.status}
+                        </Badge>
+                        <Button size="sm" variant="ghost" className="gap-2">
+                          <Eye className="w-4 h-4" />
+                          Detail
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -304,7 +329,11 @@ const KlinikSentosa = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {data.dokter.map((dokter) => (
-                  <div key={dokter.id} className="flex gap-4 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                  <div 
+                    key={dokter.id} 
+                    className="flex gap-4 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors cursor-pointer"
+                    onClick={() => setSelectedDokter(dokter)}
+                  >
                     <img
                       src={dokter.foto}
                       alt={dokter.nama}
@@ -328,6 +357,9 @@ const KlinikSentosa = () => {
                         ))}
                       </div>
                     </div>
+                    <Button size="sm" variant="ghost">
+                      <Eye className="w-4 h-4" />
+                    </Button>
                   </div>
                 ))}
               </CardContent>
@@ -375,14 +407,18 @@ const KlinikSentosa = () => {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {data.klinik.layanan.map((layanan) => (
-              <Card key={layanan.id} className="bg-gradient-card shadow-soft hover:shadow-strong transition-all group">
+              <Card 
+                key={layanan.id} 
+                className="bg-gradient-card shadow-soft hover:shadow-strong transition-all group cursor-pointer"
+                onClick={() => setSelectedLayanan(layanan)}
+              >
                 <CardHeader>
                   <CardTitle className="text-lg group-hover:text-primary transition-colors">
                     {layanan.nama}
                   </CardTitle>
                   <CardDescription>{layanan.deskripsi}</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="w-4 h-4" />
                     <span>Durasi: {layanan.durasi}</span>
@@ -390,6 +426,10 @@ const KlinikSentosa = () => {
                   <div className="text-lg font-bold text-primary">
                     {layanan.harga}
                   </div>
+                  <Button size="sm" variant="outline" className="w-full gap-2">
+                    <Eye className="w-4 h-4" />
+                    Lihat Detail
+                  </Button>
                 </CardContent>
               </Card>
             ))}
@@ -421,6 +461,313 @@ const KlinikSentosa = () => {
           </CardContent>
         </Card>
       </main>
+
+      {/* Dialog Detail Pasien */}
+      <Dialog open={!!selectedPasien} onOpenChange={() => setSelectedPasien(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <Badge variant="outline" className="text-xl font-bold px-4 py-2 border-primary text-primary">
+                {selectedPasien?.nomorAntrian}
+              </Badge>
+              Detail Pasien
+            </DialogTitle>
+            <DialogDescription>
+              Informasi lengkap data pasien dan status pemeriksaan
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedPasien && (
+            <div className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">Nama Lengkap</label>
+                  <p className="text-lg font-semibold text-foreground">{selectedPasien.nama}</p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">Umur</label>
+                  <p className="text-lg font-semibold text-foreground">{selectedPasien.umur} tahun</p>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                  <Stethoscope className="w-4 h-4" />
+                  Keluhan Pasien
+                </label>
+                <Card className="bg-muted/50">
+                  <CardContent className="pt-4">
+                    <p className="text-foreground">{selectedPasien.keluhan}</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    Waktu Pendaftaran
+                  </label>
+                  <p className="text-lg font-semibold text-foreground">{selectedPasien.waktuDaftar}</p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">Status</label>
+                  <Badge className={getStatusColor(selectedPasien.status)}>
+                    {selectedPasien.status}
+                  </Badge>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-primary" />
+                  Catatan Medis
+                </h4>
+                <Card className="bg-gradient-card">
+                  <CardContent className="pt-4 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Tekanan Darah:</span>
+                      <span className="font-medium">120/80 mmHg</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Suhu Tubuh:</span>
+                      <span className="font-medium">36.5°C</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Berat Badan:</span>
+                      <span className="font-medium">65 kg</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="flex gap-2">
+                <Button className="flex-1 gap-2">
+                  <FileText className="w-4 h-4" />
+                  Cetak Rekam Medis
+                </Button>
+                <Button variant="outline" onClick={() => setSelectedPasien(null)}>
+                  Tutup
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog Detail Dokter */}
+      <Dialog open={!!selectedDokter} onOpenChange={() => setSelectedDokter(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <Heart className="w-6 h-6 text-primary" />
+              Profil Dokter
+            </DialogTitle>
+            <DialogDescription>
+              Informasi lengkap mengenai dokter dan jadwal praktik
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedDokter && (
+            <div className="space-y-6">
+              <div className="flex gap-6 items-start">
+                <img
+                  src={selectedDokter.foto}
+                  alt={selectedDokter.nama}
+                  className="w-32 h-32 rounded-lg object-cover border-4 border-primary shadow-medium"
+                />
+                <div className="flex-1 space-y-3">
+                  <h3 className="text-2xl font-bold text-foreground">{selectedDokter.nama}</h3>
+                  <Badge className="bg-primary text-primary-foreground">
+                    {selectedDokter.spesialisasi}
+                  </Badge>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Award className="w-5 h-5" />
+                    <span>Pengalaman {selectedDokter.pengalaman}</span>
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-primary" />
+                  Jadwal Praktik
+                </h4>
+                <div className="grid grid-cols-3 gap-3">
+                  {selectedDokter.jadwal.map((hari) => (
+                    <Card key={hari} className="bg-gradient-card">
+                      <CardContent className="pt-4 text-center">
+                        <p className="font-semibold text-foreground">{hari}</p>
+                        <p className="text-sm text-muted-foreground mt-1">08:00 - 14:00</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">Keahlian Khusus</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">Pemeriksaan Umum</Badge>
+                  <Badge variant="secondary">Konsultasi Kesehatan</Badge>
+                  <Badge variant="secondary">Medical Check-up</Badge>
+                  <Badge variant="secondary">Vaksinasi</Badge>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Button className="flex-1 gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Buat Janji Temu
+                </Button>
+                <Button variant="outline" onClick={() => setSelectedDokter(null)}>
+                  Tutup
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog Detail Layanan */}
+      <Dialog open={!!selectedLayanan} onOpenChange={() => setSelectedLayanan(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <Pill className="w-6 h-6 text-primary" />
+              Detail Layanan
+            </DialogTitle>
+            <DialogDescription>
+              Informasi lengkap mengenai layanan kesehatan
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedLayanan && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold text-foreground mb-2">
+                  {selectedLayanan.nama}
+                </h3>
+                <p className="text-muted-foreground">{selectedLayanan.deskripsi}</p>
+              </div>
+
+              <Separator />
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="bg-gradient-card">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Clock className="w-5 h-5 text-primary" />
+                      <span className="text-sm font-medium text-muted-foreground">Durasi Layanan</span>
+                    </div>
+                    <p className="text-2xl font-bold text-foreground">{selectedLayanan.durasi}</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-card">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Star className="w-5 h-5 text-warning" />
+                      <span className="text-sm font-medium text-muted-foreground">Tarif</span>
+                    </div>
+                    <p className="text-2xl font-bold text-primary">{selectedLayanan.harga}</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">Yang Perlu Disiapkan</h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2 text-muted-foreground">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
+                    <span>Kartu identitas (KTP/SIM/Paspor)</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-muted-foreground">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
+                    <span>Kartu BPJS (jika ada)</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-muted-foreground">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
+                    <span>Riwayat medis sebelumnya (jika ada)</span>
+                  </li>
+                </ul>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">Prosedur Layanan</h4>
+                <div className="space-y-3">
+                  <Card className="bg-muted/50">
+                    <CardContent className="pt-4">
+                      <div className="flex gap-3">
+                        <Badge className="bg-primary text-primary-foreground">1</Badge>
+                        <div>
+                          <p className="font-medium text-foreground">Pendaftaran</p>
+                          <p className="text-sm text-muted-foreground">Daftar di loket dengan membawa identitas</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-muted/50">
+                    <CardContent className="pt-4">
+                      <div className="flex gap-3">
+                        <Badge className="bg-primary text-primary-foreground">2</Badge>
+                        <div>
+                          <p className="font-medium text-foreground">Anamnesis</p>
+                          <p className="text-sm text-muted-foreground">Perawat akan mencatat keluhan dan tanda vital</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-muted/50">
+                    <CardContent className="pt-4">
+                      <div className="flex gap-3">
+                        <Badge className="bg-primary text-primary-foreground">3</Badge>
+                        <div>
+                          <p className="font-medium text-foreground">Pemeriksaan</p>
+                          <p className="text-sm text-muted-foreground">Dokter akan melakukan pemeriksaan sesuai keluhan</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-muted/50">
+                    <CardContent className="pt-4">
+                      <div className="flex gap-3">
+                        <Badge className="bg-primary text-primary-foreground">4</Badge>
+                        <div>
+                          <p className="font-medium text-foreground">Pembayaran</p>
+                          <p className="text-sm text-muted-foreground">Lakukan pembayaran di kasir dan ambil obat jika ada resep</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Button className="flex-1 gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Daftar Sekarang
+                </Button>
+                <Button variant="outline" onClick={() => setSelectedLayanan(null)}>
+                  Tutup
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
