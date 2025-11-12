@@ -1,7 +1,7 @@
-import StudentProfile from "@/components/StudentProfile";
+import KlinikSentosa from "@/components/KlinikSentosa";
 
 const Index = () => {
-  return <StudentProfile />;
+  return <KlinikSentosa />;
 };
 
 export default Index;

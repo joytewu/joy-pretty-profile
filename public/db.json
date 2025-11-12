@@ -1,47 +1,127 @@
 {
-  "student": {
-    "id": "1",
-    "name": "Joy Pretty Tewu",
-    "faculty": "Fakultas Ilmu Komputer",
-    "major": "Ilmu Komputer",
-    "semester": 5,
-    "level": 3,
-    "dateOfBirth": "2005-11-26",
-    "email": "joy.tewu@student.unklab.ac.id",
-    "phone": "+62 xxx xxxx xxxx",
-    "academicInfo": {
-      "studentId": "2021XXXXXX",
-      "enrollmentYear": 2021,
-      "expectedGraduation": 2025,
-      "gpa": "3.85"
+  "klinik": {
+    "nama": "Klinik Sentosa",
+    "lokasi": "Kota Airmadidi",
+    "telepon": "(0431) 123-4567",
+    "email": "info@kliniksentosa.id",
+    "jamOperasional": {
+      "senin_jumat": "08:00 - 20:00",
+      "sabtu": "08:00 - 14:00",
+      "minggu": "Tutup"
     },
-    "organizations": [
+    "layanan": [
       {
         "id": 1,
-        "name": "Himpunan Mahasiswa Universitas Klabat",
-        "position": "Seksi Humas",
-        "period": "2025",
-        "description": "Bertanggung jawab dalam komunikasi dan hubungan masyarakat"
+        "nama": "Pemeriksaan Kesehatan Umum",
+        "deskripsi": "Konsultasi dan pemeriksaan kesehatan rutin",
+        "durasi": "30 menit",
+        "harga": "Rp 100.000"
       },
       {
         "id": 2,
-        "name": "Choir Voice of Computer Science",
-        "position": "Seksi Usaha Dana",
-        "period": "2025",
-        "description": "Mengelola keuangan dan mencari sponsor untuk kegiatan paduan suara"
-      }
-    ],
-    "hobbies": [
-      {
-        "id": 1,
-        "name": "Menulis",
-        "icon": "PenTool"
+        "nama": "Pemeriksaan Laboratorium",
+        "deskripsi": "Tes darah, urine, dan pemeriksaan lab lainnya",
+        "durasi": "15 menit",
+        "harga": "Rp 150.000"
       },
       {
-        "id": 2,
-        "name": "Menggambar",
-        "icon": "Palette"
+        "id": 3,
+        "nama": "Resep & Obat",
+        "deskripsi": "Pemberian resep dan pengambilan obat",
+        "durasi": "10 menit",
+        "harga": "Bervariasi"
+      },
+      {
+        "id": 4,
+        "nama": "Vaksinasi",
+        "deskripsi": "Layanan imunisasi untuk segala usia",
+        "durasi": "20 menit",
+        "harga": "Rp 200.000"
       }
     ]
+  },
+  "dokter": [
+    {
+      "id": 1,
+      "nama": "dr. Sarah Lumintang",
+      "spesialisasi": "Dokter Umum",
+      "pengalaman": "8 tahun",
+      "jadwal": ["Senin", "Rabu", "Jumat"],
+      "foto": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&h=300&fit=crop"
+    },
+    {
+      "id": 2,
+      "nama": "dr. Michael Wongkar",
+      "spesialisasi": "Dokter Umum",
+      "pengalaman": "5 tahun",
+      "jadwal": ["Selasa", "Kamis", "Sabtu"],
+      "foto": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=300&fit=crop"
+    }
+  ],
+  "pasienHariIni": [
+    {
+      "nomorAntrian": "A001",
+      "nama": "Ibu Maria Taroreh",
+      "umur": 45,
+      "keluhan": "Demam dan batuk",
+      "status": "Sedang Diperiksa",
+      "waktuDaftar": "08:15"
+    },
+    {
+      "nomorAntrian": "A002",
+      "nama": "Bapak John Tumewu",
+      "umur": 52,
+      "keluhan": "Kontrol tekanan darah",
+      "status": "Menunggu",
+      "waktuDaftar": "08:30"
+    },
+    {
+      "nomorAntrian": "A003",
+      "nama": "Ade Rumbayan",
+      "umur": 28,
+      "keluhan": "Sakit kepala berkepanjangan",
+      "status": "Menunggu",
+      "waktuDaftar": "09:00"
+    },
+    {
+      "nomorAntrian": "A004",
+      "nama": "Sinta Karamoy",
+      "umur": 35,
+      "keluhan": "Pemeriksaan rutin kehamilan",
+      "status": "Menunggu",
+      "waktuDaftar": "09:15"
+    }
+  ],
+  "statistik": {
+    "pasienHariIni": 12,
+    "pasienMingguIni": 78,
+    "pasienBulanIni": 342,
+    "tingkatKepuasan": "4.8/5.0",
+    "waktuTungguRataRata": "15 menit"
+  },
+  "teamInfo": {
+    "kelompok": [
+      {
+        "nama": "Joy",
+        "nim": "105022310029",
+        "peran": "Project Lead"
+      },
+      {
+        "nama": "Carolina",
+        "nim": "105022310026",
+        "peran": "System Analyst"
+      },
+      {
+        "nama": "Zeavani",
+        "peran": "Designer"
+      },
+      {
+        "nama": "Cantika",
+        "nim": "105012310082",
+        "peran": "Developer"
+      }
+    ],
+    "mataKuliah": "System Analysis and Design",
+    "judulTugas": "Use Case Analysis – Klinik Sentosa"
   }
 }
