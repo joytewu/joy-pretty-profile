@@ -14,6 +14,253 @@ export type Database = {
   }
   public: {
     Tables: {
+      medical_records: {
+        Row: {
+          catatan: string | null
+          created_at: string
+          diagnosis: string
+          dokter_id: string
+          gejala: string
+          id: string
+          keluhan: string
+          patient_id: string
+          tanggal_pemeriksaan: string
+          updated_at: string
+        }
+        Insert: {
+          catatan?: string | null
+          created_at?: string
+          diagnosis: string
+          dokter_id: string
+          gejala: string
+          id?: string
+          keluhan: string
+          patient_id: string
+          tanggal_pemeriksaan?: string
+          updated_at?: string
+        }
+        Update: {
+          catatan?: string | null
+          created_at?: string
+          diagnosis?: string
+          dokter_id?: string
+          gejala?: string
+          id?: string
+          keluhan?: string
+          patient_id?: string
+          tanggal_pemeriksaan?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "medical_records_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      medicines: {
+        Row: {
+          created_at: string
+          harga: number
+          id: string
+          nama_obat: string
+          satuan: string
+          stok: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          harga?: number
+          id?: string
+          nama_obat: string
+          satuan?: string
+          stok?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          harga?: number
+          id?: string
+          nama_obat?: string
+          satuan?: string
+          stok?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      patients: {
+        Row: {
+          alamat: string
+          created_at: string
+          created_by: string | null
+          id: string
+          jenis_kelamin: string
+          nama_lengkap: string
+          no_identitas: string | null
+          no_telp: string
+          tanggal_lahir: string
+          updated_at: string
+        }
+        Insert: {
+          alamat: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          jenis_kelamin: string
+          nama_lengkap: string
+          no_identitas?: string | null
+          no_telp: string
+          tanggal_lahir: string
+          updated_at?: string
+        }
+        Update: {
+          alamat?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          jenis_kelamin?: string
+          nama_lengkap?: string
+          no_identitas?: string | null
+          no_telp?: string
+          tanggal_lahir?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          barcode_url: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          medical_record_id: string
+          paid_at: string | null
+          patient_id: string
+          payment_method: string
+          payment_status: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          barcode_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          medical_record_id: string
+          paid_at?: string | null
+          patient_id: string
+          payment_method: string
+          payment_status?: string
+          total_amount: number
+          updated_at?: string
+        }
+        Update: {
+          barcode_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          medical_record_id?: string
+          paid_at?: string | null
+          patient_id?: string
+          payment_method?: string
+          payment_status?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_medical_record_id_fkey"
+            columns: ["medical_record_id"]
+            isOneToOne: false
+            referencedRelation: "medical_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prescription_items: {
+        Row: {
+          aturan_pakai: string
+          created_at: string
+          id: string
+          jumlah: number
+          medicine_id: string
+          prescription_id: string
+        }
+        Insert: {
+          aturan_pakai: string
+          created_at?: string
+          id?: string
+          jumlah: number
+          medicine_id: string
+          prescription_id: string
+        }
+        Update: {
+          aturan_pakai?: string
+          created_at?: string
+          id?: string
+          jumlah?: number
+          medicine_id?: string
+          prescription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescription_items_medicine_id_fkey"
+            columns: ["medicine_id"]
+            isOneToOne: false
+            referencedRelation: "medicines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prescription_items_prescription_id_fkey"
+            columns: ["prescription_id"]
+            isOneToOne: false
+            referencedRelation: "prescriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prescriptions: {
+        Row: {
+          created_at: string
+          id: string
+          medical_record_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          medical_record_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          medical_record_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescriptions_medical_record_id_fkey"
+            columns: ["medical_record_id"]
+            isOneToOne: false
+            referencedRelation: "medical_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
